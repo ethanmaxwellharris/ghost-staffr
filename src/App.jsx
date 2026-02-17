@@ -1,130 +1,174 @@
-import React, { useState, useEffect, useRef } from "react";
+import "./App.css";
 
-export default function HomePage() {
-  const [spotsLeft, setSpotsLeft] = useState(0);
-  const [shakeClass, setShakeClass] = useState("shake");
-  const ctaRef = useRef(null);
+const coreWorkflow = [
+  "Upload discovery packets (reports, transcripts, body-cam logs, lab docs)",
+  "Generate a clean timeline, issue map, and inconsistency report",
+  "Auto-flag Brady/Giglio exposure and evidentiary weaknesses",
+  "Choose a motion type and produce a jurisdiction-aware draft with citations",
+];
 
-  useEffect(() => {
-    const weeklyCap = 10;
-    const used = Math.floor(Math.random() * 4) + 4;
-    setSpotsLeft(weeklyCap - used);
+const fivePipelines = [
+  {
+    title: "1) Document ingestion (ETL)",
+    detail:
+      "Extract, OCR, clean, chunk, embed, and load into ChromaDB while preserving encrypted originals in object storage.",
+    principle: "Least privilege • determinism • auditability",
+  },
+  {
+    title: "2) Discovery digest pipeline",
+    detail:
+      "Trigger on new uploads to summarize facts, surface contradictions, and store a retrieval-ready digest.",
+    principle: "Automation • reproducibility • logged execution",
+  },
+  {
+    title: "3) RAG motion pipeline",
+    detail:
+      "Retrieve discovery + approved precedent, apply jurisdiction filters, and draft motions with source citations.",
+    principle: "No source = no claim • hallucination mitigation",
+  },
+  {
+    title: "4) Knowledge refresh pipeline",
+    detail:
+      "Nightly scan changed files and re-embed only what changed for predictable, versioned updates.",
+    principle: "CI/CD discipline • continuous improvement",
+  },
+  {
+    title: "5) Audit logging pipeline",
+    detail:
+      "Log ingestion events, retrieval queries, and generated outputs for compliance and defensibility.",
+    principle: "Security • accountability • compliance",
+  },
+];
 
-    const timer = setTimeout(() => setShakeClass(""), 4000);
-    return () => clearTimeout(timer);
-  }, []);
+const architectureChoices = [
+  {
+    heading: "Default deployment: on-prem GPU appliance",
+    text: "Air-gapped or tightly controlled deployments preserve confidentiality and create a clear privacy moat for defense teams.",
+  },
+  {
+    heading: "ETL-first in v1",
+    text: "Deterministic transforms and tighter security boundaries make legal defensibility stronger than loose ELT-first designs.",
+  },
+  {
+    heading: "Containerized release model",
+    text: "LLM server, RAG engine, UI, auth, and logging run as versioned containers for immutable rollbacks and safer upgrades.",
+  },
+];
 
+const riskControls = [
+  "Citation integrity: strict RAG constraints, jurisdiction filters, and confidence scoring",
+  "Model efficiency: 13B for summarization, 70B reserved for heavy motion drafting",
+  "Scope discipline: fixed SKUs and quarterly release train to avoid custom-dev sprawl",
+  "Licensing-safe workflow: BYO-PDF ingestion only (no mirrored Westlaw/Lexis corpus)",
+];
+
+function App() {
   return (
-    <div className="bg-white text-[#1C1C1C] font-sans">
-      <div className="bg-[#FFD700] text-black text-center text-sm py-2 px-4 font-semibold">
-        We build 10 AI Agents each week — <span className="italic font-bold text-red-600">{spotsLeft} spots left this week</span>
-      </div>
-
-      <style>{`
-        .shake {
-          animation: shake 1.2s infinite;
-        }
-        @keyframes shake {
-          0% { transform: translateX(0); }
-          25% { transform: translateX(-5px); }
-          50% { transform: translateX(5px); }
-          75% { transform: translateX(-5px); }
-          100% { transform: translateX(0); }
-        }
-      `}</style>
-
-      <section className="bg-[#F0F2F5] text-[#1C1C1C] py-10 px-6 text-center">
-        <h2 className="text-3xl font-bold mb-4">Ready to Hire Your First <span className="text-[#0074C2]">Ghost</span>?</h2>
-        <a
-          href="https://zcal.co/ghoststaffr/30min"
-          ref={ctaRef}
-          className={`${shakeClass} inline-block bg-[#1C1C1C] text-white font-semibold px-6 py-3 rounded-lg text-lg`}
-        >
-          Launch Your <span className="text-[#0074C2]">Assistant</span> in 2 Days
-        </a>
-      </section>
-
-      <section className="py-24 px-6 text-center">
-        <h1 className="text-5xl font-extrabold mb-4">
-          Book More Showings. Close More Deals. Sleep Better.
-        </h1>
-        <p className="text-xl mb-8 max-w-2xl mx-auto">
-          For real estate agents in the Eastern U.S. with under 10 active listings — Ghost Staffr qualifies leads, books appointments, and follows up while you focus on closing.
+    <div className="site">
+      <header className="hero">
+        <p className="eyebrow">Ghost Staffr • Criminal Defense AI Appliance</p>
+        <h1>Turn Discovery Into Draft Motions Without Risking Confidentiality</h1>
+        <p className="hero-text">
+          This is not generic “AI for lawyers.” Ghost Staffr is a compliance-first,
+          on-prem appliance for criminal defense teams: upload discovery, surface
+          Brady/Giglio issues, and generate jurisdiction-aware drafts grounded in
+          source-cited records.
         </p>
-        <div className="max-w-2xl mx-auto bg-[#F7F9FA] border border-gray-300 rounded-lg p-6">
-          <h2 className="text-2xl font-bold mb-2 text-[#1C1C1C]">Tailored for Agents in Growth Mode:</h2>
-          <ul className="text-left space-y-2 text-lg text-[#1C1C1C]">
-            <li>✅ Qualifies buyers and sellers using your intake criteria — no missed leads</li>
-            <li>✅ Schedules showings or discovery calls directly into your calendar</li>
-            <li>✅ Handles follow-ups, FAQs, and appointment confirmations 24/7</li>
-            <li>✅ Launch in 2 days — fully trained on your listings and market</li>
-            <li>✅ Save 10+ hours/week and focus on growing your business</li>
-          </ul>
+        <div className="hero-cta-group">
+          <a className="button primary" href="https://zcal.co/ghoststaffr/30min">
+            Book a criminal defense demo
+          </a>
+          <a className="button secondary" href="#workflow">
+            See the 4-step workflow
+          </a>
         </div>
-        <div className="mt-8 max-w-2xl mx-auto bg-[#FFF8E1] rounded-lg p-6 text-black">
-          <h2 className="text-2xl font-bold mb-2 text-center">Simple Pricing</h2>
-          <p className="text-lg text-center mb-4">Setup Fee: <strong>$999</strong></p>
-          <p className="text-lg text-center mb-4">Ongoing: <strong>$599/mo</strong></p>
-          <p className="text-md text-center text-gray-800">
-            Need multiple assistants for different markets or clients? We scale with you.
+      </header>
+
+      <main>
+        <section className="section" id="workflow">
+          <h2>The narrow wedge: one painful bottleneck solved extremely well</h2>
+          <p className="section-note">
+            Discovery overload and motion drafting bottlenecks are where defense
+            teams lose time and confidence. Ghost Staffr focuses there—nothing vague,
+            nothing bloated.
           </p>
-        </div>
-        <a
-          href="https://zcal.co/ghoststaffr/30min"
-          className="mt-6 inline-block bg-[#FFD700] hover:bg-yellow-500 text-black font-bold px-8 py-4 rounded-lg text-lg"
-        >
-          Get <span className="text-[#0074C2]">Ghost Staffr</span> Working for Your Portfolio in 2 Days
-        </a>
-      </section>
+          <div className="grid two">
+            {coreWorkflow.map((step) => (
+              <article className="card" key={step}>
+                <p>{step}</p>
+              </article>
+            ))}
+          </div>
+        </section>
 
-      <section className="py-20 px-6 max-w-5xl mx-auto">
-        <h2 className="text-3xl font-bold text-center mb-12">Why Agents Choose Ghost Staffr</h2>
-        <div className="grid md:grid-cols-3 gap-12">
-          <div className="text-center">
-            <div className="text-4xl mb-4">📅</div>
-            <h3 className="text-xl font-semibold mb-2">Never Miss a Lead</h3>
-            <p className="text-gray-600">Instant replies mean no more lost buyers — even on weekends or after hours.</p>
+        <section className="section card-grid muted">
+          <h2>The five production pipelines (not fifty)</h2>
+          <div className="grid two">
+            {fivePipelines.map((item) => (
+              <article className="card" key={item.title}>
+                <h3>{item.title}</h3>
+                <p>{item.detail}</p>
+                <p className="principle">{item.principle}</p>
+              </article>
+            ))}
           </div>
-          <div className="text-center">
-            <div className="text-4xl mb-4">🧠</div>
-            <h3 className="text-xl font-semibold mb-2">Smart Follow-up</h3>
-            <p className="text-gray-600">Automated follow-ups keep cold leads warm while you’re showing homes.</p>
-          </div>
-          <div className="text-center">
-            <div className="text-4xl mb-4">🔑</div>
-            <h3 className="text-xl font-semibold mb-2">Look Professional</h3>
-            <p className="text-gray-600">Present as buttoned-up and responsive — even if you’re flying solo.</p>
-          </div>
-        </div>
-      </section>
+        </section>
 
-      <section className="bg-[#F7F9FA] py-20 px-6">
-        <h2 className="text-3xl font-bold text-center mb-12">What Agents Say</h2>
-        <div className="max-w-3xl mx-auto space-y-12">
-          <blockquote className="text-center">
-            <p className="text-xl italic text-gray-700">
-              "With Ghost Staffr, I don’t worry about losing leads when I’m at showings. It just works."
+        <section className="section">
+          <h2>Built as a product appliance, not a consulting project</h2>
+          <div className="grid three">
+            {architectureChoices.map((choice) => (
+              <article className="card" key={choice.heading}>
+                <h3>{choice.heading}</h3>
+                <p>{choice.text}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="section split">
+          <div>
+            <h2>Risk controls that matter in court-facing work</h2>
+            <ul>
+              {riskControls.map((risk) => (
+                <li key={risk}>{risk}</li>
+              ))}
+            </ul>
+          </div>
+          <div className="card">
+            <h2>Offer structure</h2>
+            <p>
+              <strong>Promise:</strong> Turn discovery into draft litigation assets in
+              hours, not days.
             </p>
-            <footer className="mt-4 text-gray-600">— David, New Jersey Agent (7 listings)</footer>
-          </blockquote>
-          <blockquote className="text-center">
-            <p className="text-xl italic text-gray-700">
-              "I used to juggle DMs and calls late into the night — now Ghost Staffr handles it while I rest."
+            <p>
+              <strong>Guarantee:</strong> 90 days to prove 30%+ drafting time savings
+              or refund.
             </p>
-            <footer className="mt-4 text-gray-600">— Marcus, Virginia Realtor</footer>
-          </blockquote>
-        </div>
-      </section>
+            <p>
+              <strong>SKUs:</strong> Lite (13B + Discovery) and Pro (13B + 70B + Motion
+              Kits).
+            </p>
+            <p>
+              <strong>Commercial model:</strong> setup + annual license + optional
+              maintenance.
+            </p>
+          </div>
+        </section>
+      </main>
 
-      <section id="get-started" className="bg-[#F0F2F5] text-[#1C1C1C] py-20 px-6 text-center">
-        <h2 className="text-3xl font-bold mb-4">Ready to Hire Your First <span className="text-[#0074C2]">Ghost</span>?</h2>
-        <a
-          href="#"
-          className="inline-block bg-[#1C1C1C] text-white font-semibold px-6 py-3 rounded-lg text-lg"
-        >
-          Launch Your <span className="text-[#0074C2]">Assistant</span> in 2 Days
+      <section className="section cta" id="deployment">
+        <h2>A secure legal assistant in your back pocket</h2>
+        <p>
+          If your firm needs grounded, auditable, confidentiality-first motion
+          drafting support, Ghost Staffr is designed for exactly that workflow.
+        </p>
+        <a className="button primary" href="https://zcal.co/ghoststaffr/30min">
+          Schedule implementation planning
         </a>
       </section>
     </div>
   );
 }
+
+export default App;
